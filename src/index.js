@@ -137,7 +137,7 @@ function emailHTML(releases, bj) {
       color:#FFFFFF;
       font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
       font-size:13px;
-      font-weight:700;
+      font-weight:640;
       text-transform:uppercase;
       letter-spacing:1px;
       line-height:1.4;
@@ -148,7 +148,7 @@ function emailHTML(releases, bj) {
       color:#FFFFFF;
       font-family:'SF Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,Courier,monospace;
       font-size:18px;
-      font-weight:700;
+      font-weight:640;
       text-align:right;
       letter-spacing:0.3px;
       line-height:1.4;
@@ -242,7 +242,7 @@ function emailHTML(releases, bj) {
         <tr><td align="center">
           <h1 style="margin:0;
             font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-            font-size:30px;font-weight:700;letter-spacing:0.5px;line-height:1.3;">
+            font-size:30px;font-weight:640;letter-spacing:0.5px;line-height:1.3;">
             <span style="color:#FFFFFF;">Linux Kernel Update</span>
           </h1>
         </td></tr>
