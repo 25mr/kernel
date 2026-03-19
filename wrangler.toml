@@ -1,4 +1,4 @@
-name = "kernel-notifier"
+name = "kernel"
 main = "src/index.js"
 compatibility_date = "2024-12-01"
 
