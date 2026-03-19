@@ -27,12 +27,11 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
+          git add package.json
           
-          git add -f package.json package-lock.json
-          
-          if git commit -m "chore: monthly update wrangler to latest"; then
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: monthly update wrangler to latest"
             git push
-            echo "Successfully committed and pushed updates."
           else
-            echo "Wrangler is already up to date or no changes to commit."
+            echo "Wrangler is already up to date. No commit needed."
           fi
