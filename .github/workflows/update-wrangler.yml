@@ -1,7 +1,7 @@
 name: Monthly Update Wrangler
 on:
   schedule:
-    - cron: '26 2 16 * *'
+    - cron: '26 8 16 * *'
   workflow_dispatch:
 
 env:
