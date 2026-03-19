@@ -108,13 +108,12 @@ async function fetchReleases() {
 
 // ─── Email HTML builder ──────────────────────────────────────────
 function emailHTML(releases, bj) {
-  /* ---- per-moniker palette: [headerBg, bodyBg, bodyText, badgeBg] ---- */
   const palette = {
-    mainline: ["#2563EB", "#EFF6FF", "#1E40AF", "#DBEAFE"],
-    stable:   ["#059669", "#ECFDF5", "#065F46", "#D1FAE5"],
-    longterm: ["#7C3AED", "#F5F3FF", "#5B21B6", "#EDE9FE"],
+    mainline: ["#2563EB", "#EFF6FF", "#1E40AF"],
+    stable:   ["#059669", "#ECFDF5", "#065F46"],
+    longterm: ["#7C3AED", "#F5F3FF", "#5B21B6"],
   };
-  const fallback = ["#475569", "#F8FAFC", "#334155", "#F1F5F9"];
+  const fallback = ["#475569", "#F8FAFC", "#334155"];
 
   const cards = releases
     .map(r => {
@@ -122,7 +121,7 @@ function emailHTML(releases, bj) {
       return `
 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0"><tr><td><![endif]-->
 <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="
-  margin-bottom:24px;
+  margin-bottom:20px;
   border-radius:12px;
   overflow:hidden;
   border:1px solid #E2E8F0;
@@ -130,34 +129,37 @@ function emailHTML(releases, bj) {
   mso-table-rspace:0pt;
 ">
   <tr>
-    <td width="45%" bgcolor="${hBg}" style="
+    <td bgcolor="${hBg}" style="
       background-color:${hBg};
-      padding-top:18px; padding-bottom:18px; padding-left:24px; padding-right:12px;
-      color:#FFFFFF;
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-      font-size:13px;
-      font-weight:700;
-      text-transform:uppercase;
-      letter-spacing:1.2px;
-    "><span style="color:#FFFFFF;">${esc(r.moniker)}</span></td>
-    <td width="55%" bgcolor="${hBg}" style="
-      background-color:${hBg};
-      padding-top:18px; padding-bottom:18px; padding-left:12px; padding-right:24px;
-      color:#FFFFFF;
-      font-family:'SF Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,Courier,monospace;
-      font-size:18px;
-      font-weight:700;
-      text-align:right;
-      letter-spacing:0.3px;
-    "><span style="color:#FFFFFF;">${esc(r.version)}</span></td>
+      padding:22px 24px 20px 24px;
+    ">
+      <p style="margin:0 0 10px 0;
+        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+        font-size:11px;
+        font-weight:700;
+        text-transform:uppercase;
+        letter-spacing:1.5px;
+        line-height:1;">
+        <span style="color:rgba(255,255,255,0.85);">${esc(r.moniker)}</span>
+      </p>
+      <p style="margin:0;
+        font-family:'SF Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,Courier,monospace;
+        font-size:24px;
+        font-weight:700;
+        letter-spacing:0.3px;
+        line-height:1.2;">
+        <span style="color:#FFFFFF;">${esc(r.version)}</span>
+      </p>
+    </td>
   </tr>
   <tr>
-    <td colspan="2" bgcolor="${bBg}" style="
+    <td bgcolor="${bBg}" style="
       background-color:${bBg};
-      padding-top:14px; padding-bottom:14px; padding-left:24px; padding-right:24px;
-      color:${bTxt};
+      padding:14px 24px;
       font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
       font-size:14px;
+      line-height:1.4;
+      color:${bTxt};
     ">&#128197;&ensp;${esc(r.isodate)}</td>
   </tr>
 </table>
@@ -187,29 +189,39 @@ function emailHTML(releases, bj) {
   table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
   img{-ms-interpolation-mode:bicubic;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;}
   body{margin:0;padding:0;width:100%!important;background-color:#F1F5F9;}
-  
+
   @media (prefers-color-scheme: dark) {
     .dark-bg-force { background-color: #0F172A !important; }
     .dark-text-force { color: #ffffff !important; }
   }
-  
+
   @media only screen and (max-width:640px){
     .outer{width:100%!important;}
-    .inner{padding-top:28px !important; padding-bottom:28px !important; padding-left:20px !important; padding-right:20px !important;}
-    .hdr{padding-top:36px !important; padding-bottom:30px !important; padding-left:20px !important; padding-right:20px !important;}
-    .ftr{padding-top:22px !important; padding-bottom:22px !important; padding-left:20px !important; padding-right:20px !important;}
+    .inner{padding:28px 20px !important;}
+    .hdr{padding:36px 20px 30px !important;}
+    .ftr{padding:22px 20px !important;}
   }
 </style>
 </head>
 <body style="margin:0;padding:0;background-color:#F1F5F9;">
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F9;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+       style="background-color:#F1F5F9;">
 <tr><td align="center" style="padding:36px 16px;">
 
+<!--[if mso]>
+<table role="presentation" align="center" width="600" cellpadding="0" cellspacing="0">
+<tr><td>
+<![endif]-->
+
 <!-- ============ MAIN CONTAINER ============ -->
-<table class="outer" role="presentation" width="600" cellpadding="0" cellspacing="0" style="
-  max-width:600px;width:100%;
-  border-radius:16px;overflow:hidden;
+<table class="outer" role="presentation" cellpadding="0" cellspacing="0"
+       align="center" style="
+  max-width:600px;
+  width:100%;
+  margin:0 auto;
+  border-radius:16px;
+  overflow:hidden;
   box-shadow:0 8px 30px rgba(0,0,0,0.12);
 ">
 
@@ -218,11 +230,12 @@ function emailHTML(releases, bj) {
     <td class="hdr dark-bg-force" align="center" style="
       background-color:#0F172A;
       background-image:linear-gradient(135deg,#0F172A 0%,#1E293B 40%,#0F172A 100%);
-      padding-top:48px; padding-bottom:40px; padding-left:40px; padding-right:40px;
+      padding:48px 40px 40px;
       text-align:center;
     ">
       <!--[if mso]>
-      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:600px;">
+      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false"
+              style="width:600px;">
       <v:fill type="gradient" color="#0F172A" color2="#1E293B" angle="135"/>
       <v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
       <![endif]-->
@@ -233,7 +246,7 @@ function emailHTML(releases, bj) {
         <tr><td align="center">
           <h1 style="margin:0;
             font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-            font-size:24px;font-weight:700;letter-spacing:0.5px;line-height:1.3;">
+            font-size:30px;font-weight:700;letter-spacing:0.5px;line-height:1.3;">
             <span style="color:#FFFFFF;">Linux Kernel Update</span>
           </h1>
         </td></tr>
@@ -251,11 +264,14 @@ function emailHTML(releases, bj) {
 
   <!-- ======== BODY ======== -->
   <tr>
-    <td class="inner" style="background-color:#FFFFFF; padding-top:40px; padding-bottom:32px; padding-left:44px; padding-right:44px;">
-      <!-- subtitle -->
+    <td class="inner" style="
+      background-color:#FFFFFF;
+      padding:40px 44px 32px;
+    ">
       <p style="margin:0 0 28px;color:#94A3B8;
         font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-        font-size:13px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;text-align:center;">
+        font-size:13px;text-transform:uppercase;letter-spacing:1.5px;
+        font-weight:600;text-align:center;">
         Latest Releases
       </p>
       ${cards}
@@ -267,22 +283,23 @@ function emailHTML(releases, bj) {
     <td class="ftr dark-bg-force" align="center" style="
       background-color:#0F172A;
       background-image:linear-gradient(135deg,#1E293B 0%,#0F172A 40%,#1E293B 100%);
-      padding-top:30px; padding-bottom:30px; padding-left:40px; padding-right:40px;
+      padding:30px 40px;
       text-align:center;
     ">
       <!--[if mso]>
-      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:600px;">
+      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false"
+              style="width:600px;">
       <v:fill type="gradient" color="#1E293B" color2="#0F172A" angle="135"/>
       <v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
       <![endif]-->
       <p style="margin:0;
         font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-        font-size:13px;line-height:1.6;">
+        font-size:12px;line-height:1.6;">
         <span style="color:#94A3B8;">Updated at ${esc(bj.full)} UTC+8</span>
       </p>
       <p style="margin:8px 0 0;
         font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-        font-size:11px;line-height:1.4;">
+        font-size:10px;line-height:1.4;">
         <span style="color:#64748B;">Data sourced from kernel.org</span>
       </p>
       <!--[if mso]></v:textbox></v:rect><![endif]-->
@@ -291,6 +308,8 @@ function emailHTML(releases, bj) {
 
 </table>
 <!-- ============ /MAIN CONTAINER ============ -->
+
+<!--[if mso]></td></tr></table><![endif]-->
 
 </td></tr></table>
 </body>
