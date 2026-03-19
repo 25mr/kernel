@@ -109,160 +109,166 @@ async function fetchReleases() {
 // ─── Email HTML builder ──────────────────────────────────────────
 function emailHTML(releases, bj) {
   const palette = {
-    mainline: ["#E5F0FF", "#007AFF"],
-    stable:   ["#E8F8EE", "#34C759"],
-    longterm: ["#F4E8FB", "#AF52DE"],
+    mainline: { bg: "#DBEAFE", fg: "#2563EB" },
+    stable:   { bg: "#D1FAE5", fg: "#059669" },
+    longterm: { bg: "#EDE9FE", fg: "#7C3AED" },
   };
-  const fallback = ["#F2F2F7", "#8E8E93"];
+  const fallbackPalette = { bg: "#F3F4F6", fg: "#6B7280" };
 
-  const listItems = releases
-    .map((r, i) => {
-      const [bg, fg] = palette[r.moniker] || fallback;
-      const isLast = i === releases.length - 1;
-      const borderStyle = isLast ? "" : "border-bottom: 0.5px solid #E5E5EA;";
-
+  const releaseCards = releases
+    .map(r => {
+      const p = palette[r.moniker] || fallbackPalette;
       return `
-  <tr>
-    <td class="divider" style="padding: 16px 20px; ${borderStyle}">
-      <table width="100%" cellpadding="0" cellspacing="0" style="table-layout: fixed; width: 100%;">
-        <tr>
-          <td width="55%" align="left" valign="middle">
-            <span style="
-              display: inline-block;
-              background-color: ${bg};
-              color: ${fg};
-              font-size: 11px;
-              font-weight: 700;
-              text-transform: uppercase;
-              padding: 4px 10px;
-              border-radius: 12px;
-              letter-spacing: 0.5px;
-            ">${esc(r.moniker)}</span>
-            <div style="
-              margin-top: 8px;
-              font-size: 13px;
-              color: #8E8E93;
-              font-weight: 400;
-              letter-spacing: -0.2px;
-            ">${esc(r.isodate)}</div>
-          </td>
-          <td width="45%" align="right" valign="middle" class="text-primary" style="
-            font-family: 'SF Mono', ui-monospace, Menlo, Monaco, Consolas, monospace;
-            font-size: 18px;
-            font-weight: 600;
-            color: #1D1D1F;
-            letter-spacing: -0.5px;
-            word-break: break-all;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            hyphens: none;
+      <!-- release: ${esc(r.moniker)} -->
+      <table width="100%" cellpadding="0" cellspacing="0" role="presentation"
+        style="width:100%;table-layout:fixed;">
+        <tr><td style="padding:0 0 10px 0;">
+          <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="
+            width:100%;table-layout:fixed;
+            background-color:#FFFFFF;
+            border-radius:12px;
+            border-left:4px solid ${p.fg};
           ">
-            ${esc(r.version)}
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>`;
+            <tr>
+              <!-- moniker badge -->
+              <td width="30%" align="center" valign="middle"
+                style="padding:18px 4px;border-right:1px solid #F3F4F6;">
+                <span style="
+                  display:inline-block;
+                  background:${p.bg};color:${p.fg};
+                  font-size:11px;font-weight:700;
+                  text-transform:uppercase;
+                  padding:4px 9px;border-radius:8px;
+                  letter-spacing:0.3px;
+                ">${esc(r.moniker)}</span>
+              </td>
+              <!-- version -->
+              <td width="40%" align="center" valign="middle" style="
+                padding:18px 4px;
+                border-right:1px solid #F3F4F6;
+                font-family:'SF Mono',Menlo,Consolas,monospace;
+                font-size:16px;font-weight:700;
+                color:#111827;
+                word-break:break-all;
+                word-wrap:break-word;
+              ">${esc(r.version)}</td>
+              <!-- date -->
+              <td width="30%" align="center" valign="middle" style="
+                padding:18px 4px;
+                font-size:12px;color:#6B7280;font-weight:500;
+              ">${esc(r.isodate)}</td>
+            </tr>
+          </table>
+        </td></tr>
+      </table>`;
     })
     .join("\n");
 
   return `<!DOCTYPE html>
-<html lang="en" style="margin:0;padding:0;width:100%;overflow-x:hidden;">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no">
 <title>Linux Kernel Update</title>
-<style>
-  *, *:before, *:after { box-sizing: border-box !important; }
-
-  html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important;
+<!--[if mso]>
+<style type="text/css">
+  body,table,td{font-family:Arial,Helvetica,sans-serif !important;}
+</style>
+<noscript><xml>
+  <o:OfficeDocumentSettings>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+  </o:OfficeDocumentSettings>
+</xml></noscript>
+<![endif]-->
+<style type="text/css">
+  body{
+    margin:0 !important;padding:0 !important;
+    width:100% !important;min-width:100% !important;
+    -webkit-text-size-adjust:100% !important;
+    -ms-text-size-adjust:100% !important;
   }
-
-  body {
-    min-width: 100% !important;
-    background-color: #F2F2F7;
-    -webkit-text-size-adjust: 100%;
-    -webkit-font-smoothing: antialiased;
+  table{
+    border-spacing:0 !important;
+    border-collapse:collapse !important;
+    mso-table-lspace:0pt !important;
+    mso-table-rspace:0pt !important;
   }
-
-  table, td {
-    border-spacing: 0;
-    mso-table-lspace: 0pt;
-    mso-table-rspace: 0pt;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    body, .bg-page { background-color: #000000 !important; }
-    .bg-card { background-color: #1C1C1E !important; }
-    .text-primary { color: #FFFFFF !important; }
-    .text-title { color: #FFFFFF !important; }
-    .divider { border-bottom-color: #38383A !important; }
-  }
+  td{padding:0;}
+  img{border:0;height:auto;line-height:100%;outline:none;text-decoration:none;}
 </style>
 </head>
-<body class="bg-page" style="margin:0; padding:0; background-color:#F2F2F7; width:100%; max-width:100%; overflow-x:hidden; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;">
+<body style="
+  margin:0;padding:0;width:100%;
+  background-color:#F2F2F7;
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',
+              'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+">
 
-<div style="width:100%; max-width:100%; overflow:hidden;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+  style="width:100%;table-layout:fixed;background-color:#F2F2F7;">
+<tr>
+<td align="center" valign="top" style="padding:0;">
 
-<table width="100%" cellpadding="0" cellspacing="0" style="width:100%; min-width:100%; table-layout:fixed;">
+<!--[if (gte mso 9)|(IE)]>
+<table role="presentation" width="480" align="center"
+  cellpadding="0" cellspacing="0" border="0"><tr><td>
+<![endif]-->
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0"
+  style="width:100%;max-width:480px;table-layout:fixed;">
+
+  <!-- ===== HEADER ===== -->
   <tr>
-    <td align="center" style="padding: 40px 16px 32px 16px; overflow:hidden;">
-
-      <table width="100%" cellpadding="0" cellspacing="0" style="width:100%; max-width:420px; table-layout:fixed;">
-
-        <!-- HEADER -->
-        <tr>
-          <td align="left" style="padding-bottom: 20px; padding-left: 8px;">
-            <div style="font-size: 32px; margin-bottom: 8px;">&#x1F427;</div>
-            <h1 class="text-title" style="margin: 0; font-size: 28px; font-weight: 700; color: #1D1D1F; letter-spacing: -0.8px;">
-              Linux Kernel
-            </h1>
-            <p style="margin: 4px 0 0; font-size: 13px; font-weight: 600; color: #8E8E93; text-transform: uppercase; letter-spacing: 1.2px;">
-              Latest Releases
-            </p>
-          </td>
-        </tr>
-
-        <!-- BODY -->
-        <tr>
-          <td style="padding: 0 12px; overflow: hidden;">
-            <table class="bg-card" width="100%" cellpadding="0" cellspacing="0" style="
-              background-color: #FFFFFF;
-              border-radius: 16px;
-              overflow: hidden;
-              width: 100%;
-              table-layout: fixed;
-              box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            ">
-              ${listItems}
-            </table>
-          </td>
-        </tr>
-
-        <!-- FOOTER -->
-        <tr>
-          <td align="center" style="padding-top: 24px;">
-            <p style="margin: 0; font-size: 12px; color: #8E8E93;">
-              Updated at ${esc(bj.full)} UTC+8
-            </p>
-            <p style="margin: 4px 0 0; font-size: 11px; color: #AEAEB2;">
-              kernel.org
-            </p>
-          </td>
-        </tr>
-
-      </table>
-
+    <td align="center" style="
+      background-color:#0F172A;
+      background-image:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);
+      padding:36px 20px 28px;
+    ">
+      <div style="font-size:34px;line-height:42px;margin-bottom:10px;">&#x1F427;</div>
+      <h1 style="
+        margin:0;font-size:24px;font-weight:700;
+        color:#FFFFFF;letter-spacing:-0.5px;line-height:30px;
+      ">Linux Kernel</h1>
+      <p style="
+        margin:6px 0 0;font-size:11px;font-weight:600;
+        color:#94A3B8;text-transform:uppercase;
+        letter-spacing:1.5px;line-height:16px;
+      ">Latest Releases</p>
     </td>
   </tr>
+
+  <!-- ===== BODY ===== -->
+  <tr>
+    <td style="padding:16px 12px 8px;background-color:#F2F2F7;">
+      ${releaseCards}
+    </td>
+  </tr>
+
+  <!-- ===== FOOTER ===== -->
+  <tr>
+    <td align="center" style="
+      background-color:#0F172A;
+      background-image:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);
+      padding:20px 16px;
+    ">
+      <p style="margin:0;font-size:12px;color:#94A3B8;line-height:18px;">
+        Updated at ${esc(bj.full)} UTC+8
+      </p>
+      <p style="margin:4px 0 0;font-size:11px;color:#64748B;line-height:18px;">
+        kernel.org
+      </p>
+    </td>
+  </tr>
+
 </table>
 
-</div>
+<!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
+
+</td>
+</tr>
+</table>
 
 </body>
 </html>`;
@@ -297,7 +303,7 @@ async function sendMail(env, subject, html) {
 async function sendKernelUpdate(env) {
   const releases = await fetchReleases();
   const bj = beijing();
-  const subject = `🌈Linux Kernel Update - ${bj.date}`;
+  const subject = `⚙️Linux Kernel Update - ${bj.date}`;
   await sendMail(env, subject, emailHTML(releases, bj));
 }
 
@@ -429,13 +435,11 @@ const SEC_HEADERS = {
 export default {
   /* ---------- HTTP trigger (manual) ---------- */
   async fetch(request, env) {
-    // GET → render password form
     if (request.method === "GET") {
       const token = await csrfSign(env.CSRF_SECRET);
       return new Response(triggerPage(token), { headers: SEC_HEADERS });
     }
 
-    // POST → verify then send
     if (request.method === "POST") {
       let fd;
       try {
@@ -447,7 +451,6 @@ export default {
         });
       }
 
-      // 1) CSRF check
       const csrfOk = await csrfVerify(fd.get("_csrf"), env.CSRF_SECRET);
       if (!csrfOk) {
         return new Response(
@@ -456,7 +459,6 @@ export default {
         );
       }
 
-      // 2) Password check (timing-safe)
       const pwOk = await safeEqual(fd.get("password") ?? "", env.TRIGGER_PASSWORD);
       if (!pwOk) {
         return new Response(resultPage(false, "Incorrect password."), {
@@ -465,7 +467,6 @@ export default {
         });
       }
 
-      // 3) Send
       try {
         await sendKernelUpdate(env);
         return new Response(
