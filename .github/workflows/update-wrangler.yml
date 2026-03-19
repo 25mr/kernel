@@ -1,0 +1,37 @@
+name: Monthly Update Wrangler
+on:
+  schedule:
+    - cron: '26 2 16 * *'
+  workflow_dispatch:
+  
+permissions:
+  contents: write
+  
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    name: Update Wrangler
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install and Update Wrangler
+        run: npm install --save-dev wrangler@latest
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add package.json package-lock.json
+          
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: monthly update wrangler to latest"
+            git push
+          else
+            echo "Wrangler is already up to date. No commit needed."
+          fi
