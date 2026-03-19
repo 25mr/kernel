@@ -169,7 +169,7 @@ function emailHTML(releases, bj) {
     .join("\n");
 
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -261,7 +261,7 @@ function emailHTML(releases, bj) {
         Updated at ${esc(bj.full)} UTC+8
       </p>
       <p style="margin:4px 0 0;font-size:12px;color:#64748B;line-height:18px;">
-        kernel.org
+        Data source: kernel.org
       </p>
     </td>
   </tr>
