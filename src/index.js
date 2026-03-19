@@ -143,7 +143,7 @@ function emailHTML(releases, bj) {
                 ">${esc(r.moniker)}</span>
               </td>
               <!-- version -->
-              <td width="40%" align="center" valign="middle" style="
+              <td width="30%" align="center" valign="middle" style="
                 padding:18px 4px;
                 border-right:1px solid #F3F4F6;
                 font-family:'SF Mono',Menlo,Consolas,monospace;
@@ -153,9 +153,9 @@ function emailHTML(releases, bj) {
                 word-wrap:break-word;
               ">${esc(r.version)}</td>
               <!-- date -->
-              <td width="30%" align="center" valign="middle" style="
+              <td width="40%" align="center" valign="middle" style="
                 padding:18px 4px;
-                font-size:12px;color:#6B7280;font-weight:500;
+                font-size:16px;color:#6B7280;font-weight:500;
               ">${esc(r.isodate)}</td>
             </tr>
           </table>
@@ -212,12 +212,12 @@ function emailHTML(releases, bj) {
 <td align="center" valign="top" style="padding:0;">
 
 <!--[if (gte mso 9)|(IE)]>
-<table role="presentation" width="480" align="center"
+<table role="presentation" width="420" align="center"
   cellpadding="0" cellspacing="0" border="0"><tr><td>
 <![endif]-->
 
 <table role="presentation" cellpadding="0" cellspacing="0" border="0"
-  style="width:100%;max-width:480px;table-layout:fixed;">
+  style="width:100%;max-width:420px;table-layout:fixed;">
 
   <!-- ===== HEADER ===== -->
   <tr>
@@ -226,7 +226,7 @@ function emailHTML(releases, bj) {
       background-image:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);
       padding:36px 20px 28px;
     ">
-      <div style="font-size:34px;line-height:42px;margin-bottom:10px;">&#x1F427;</div>
+      <div style="font-size:52px;line-height:60px;margin-bottom:12px;">&#x1F427;</div>
       <h1 style="
         margin:0;font-size:24px;font-weight:700;
         color:#FFFFFF;letter-spacing:-0.5px;line-height:30px;
