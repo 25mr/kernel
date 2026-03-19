@@ -155,7 +155,11 @@ function emailHTML(releases, bj) {
               <!-- date -->
               <td width="40%" align="center" valign="middle" style="
                 padding:18px 4px;
-                font-size:16px;color:#6B7280;font-weight:500;
+                font-family:'SF Mono',Menlo,Consolas,monospace;
+                font-size:15px;font-weight:700;
+                color:#111827;
+                word-break:break-all;
+                word-wrap:break-word;
               ">${esc(r.isodate)}</td>
             </tr>
           </table>
@@ -212,12 +216,12 @@ function emailHTML(releases, bj) {
 <td align="center" valign="top" style="padding:0;">
 
 <!--[if (gte mso 9)|(IE)]>
-<table role="presentation" width="420" align="center"
+<table role="presentation" width="480" align="center"
   cellpadding="0" cellspacing="0" border="0"><tr><td>
 <![endif]-->
 
 <table role="presentation" cellpadding="0" cellspacing="0" border="0"
-  style="width:100%;max-width:420px;table-layout:fixed;">
+  style="width:100%;max-width:480px;table-layout:fixed;">
 
   <!-- ===== HEADER ===== -->
   <tr>
@@ -226,9 +230,9 @@ function emailHTML(releases, bj) {
       background-image:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);
       padding:36px 20px 28px;
     ">
-      <div style="font-size:52px;line-height:60px;margin-bottom:12px;">&#x1F427;</div>
+      <div style="font-size:52px;line-height:62px;margin-bottom:12px;">&#x1F427;</div>
       <h1 style="
-        margin:0;font-size:24px;font-weight:700;
+        margin:0;font-size:28px;font-weight:700;
         color:#FFFFFF;letter-spacing:-0.5px;line-height:30px;
       ">Linux Kernel</h1>
       <p style="
@@ -241,7 +245,7 @@ function emailHTML(releases, bj) {
 
   <!-- ===== BODY ===== -->
   <tr>
-    <td style="padding:16px 12px 8px;background-color:#F2F2F7;">
+    <td style="padding:16px 24px 8px;background-color:#F2F2F7;">
       ${releaseCards}
     </td>
   </tr>
@@ -256,7 +260,7 @@ function emailHTML(releases, bj) {
       <p style="margin:0;font-size:12px;color:#94A3B8;line-height:18px;">
         Updated at ${esc(bj.full)} UTC+8
       </p>
-      <p style="margin:4px 0 0;font-size:11px;color:#64748B;line-height:18px;">
+      <p style="margin:4px 0 0;font-size:12px;color:#64748B;line-height:18px;">
         kernel.org
       </p>
     </td>
