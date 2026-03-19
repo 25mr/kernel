@@ -110,11 +110,11 @@ async function fetchReleases() {
 function emailHTML(releases, bj) {
   /* ---- iOS System Colors: [Badge Bg, Badge Text] ---- */
   const palette = {
-    mainline: ["#E5F0FF", "#007AFF"], // iOS System Blue
-    stable:   ["#E8F8EE", "#34C759"], // iOS System Green
-    longterm: ["#F4E8FB", "#AF52DE"], // iOS System Purple
+    mainline: ["#E5F0FF", "#007AFF"],
+    stable:   ["#E8F8EE", "#34C759"],
+    longterm: ["#F4E8FB", "#AF52DE"],
   };
-  const fallback = ["#F2F2F7", "#8E8E93"]; // iOS System Gray
+  const fallback = ["#F2F2F7", "#8E8E93"];
 
   const listItems = releases
     .map((r, i) => {
@@ -154,7 +154,9 @@ function emailHTML(releases, bj) {
             font-weight: 600;
             color: #1D1D1F;
             letter-spacing: -0.5px;
-            word-break: break-word;
+            word-break: break-all;
+            word-wrap: break-word;
+            hyphens: none;
           ">
             ${esc(r.version)}
           </td>
@@ -174,14 +176,19 @@ function emailHTML(releases, bj) {
 <title>Linux Kernel Update</title>
 <style>
   *, *:before, *:after { box-sizing: border-box !important; }
+  
   body { 
     margin: 0 !important; 
     padding: 0 !important; 
-    width: 100% !important; 
+    width: 100% !important;
+    min-width: 100% !important; 
+    max-width: 100% !important;
     background-color: #F2F2F7;
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden !important; 
   }
+  
   table, td { border-spacing: 0; }
   
   @media (prefers-color-scheme: dark) {
@@ -193,18 +200,18 @@ function emailHTML(releases, bj) {
   }
 </style>
 </head>
-<body class="bg-page" style="margin:0; padding:0; background-color:#F2F2F7; width:100%; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;">
+<body class="bg-page" style="margin:0; padding:0; background-color:#F2F2F7; width:100%; min-width:100%; overflow-x:hidden; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;">
 
-<table width="100%" cellpadding="0" cellspacing="0" style="width: 100%;">
+<table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; min-width: 100%;">
   <tr>
     <td align="center" style="padding: 40px 16px 32px 16px;">
 
-      <table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 500px; margin: 0 auto;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 500px;">
         
         <!-- HEADER -->
         <tr>
           <td align="left" style="padding-bottom: 20px; padding-left: 8px;">
-            <div style="font-size: 30px; margin-bottom: 8px;">&#x1F427;</div>
+            <div style="font-size: 32px; margin-bottom: 8px;">&#x1F427;</div>
             <h1 class="text-title" style="margin: 0; font-size: 28px; font-weight: 700; color: #1D1D1F; letter-spacing: -0.8px;">
               Linux Kernel
             </h1>
