@@ -206,7 +206,7 @@ function emailHTML(releases, bj) {
   <tr>
     <td align="center" style="padding: 40px 16px 32px 16px;">
 
-      <table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 500px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 420px;">
         
         <!-- HEADER -->
         <tr>
@@ -223,7 +223,7 @@ function emailHTML(releases, bj) {
 
         <!-- BODY -->
         <tr>
-          <td>
+          <td style="padding: 0 12px;">
             <table class="bg-card" width="100%" cellpadding="0" cellspacing="0" style="
               background-color: #FFFFFF;
               border-radius: 16px;
@@ -240,7 +240,7 @@ function emailHTML(releases, bj) {
         <tr>
           <td align="center" style="padding-top: 24px;">
             <p style="margin: 0; font-size: 12px; color: #8E8E93;">
-              Updated at ${esc(bj.full)}
+              Updated at ${esc(bj.full)} UTC+8
             </p>
             <p style="margin: 4px 0 0; font-size: 11px; color: #AEAEB2;">
               kernel.org
