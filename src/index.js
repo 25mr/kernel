@@ -108,7 +108,6 @@ async function fetchReleases() {
 
 // ─── Email HTML builder ──────────────────────────────────────────
 function emailHTML(releases, bj) {
-  /* ---- iOS System Colors: [Badge Bg, Badge Text] ---- */
   const palette = {
     mainline: ["#E5F0FF", "#007AFF"],
     stable:   ["#E8F8EE", "#34C759"],
@@ -147,7 +146,6 @@ function emailHTML(releases, bj) {
               letter-spacing: -0.2px;
             ">${esc(r.isodate)}</div>
           </td>
-          
           <td width="45%" align="right" valign="middle" class="text-primary" style="
             font-family: 'SF Mono', ui-monospace, Menlo, Monaco, Consolas, monospace;
             font-size: 18px;
@@ -156,6 +154,7 @@ function emailHTML(releases, bj) {
             letter-spacing: -0.5px;
             word-break: break-all;
             word-wrap: break-word;
+            overflow-wrap: break-word;
             hyphens: none;
           ">
             ${esc(r.version)}
@@ -167,30 +166,36 @@ function emailHTML(releases, bj) {
     })
     .join("\n");
 
-  /* ---- full email ---- */
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="margin:0;padding:0;width:100%;overflow-x:hidden;">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Linux Kernel Update</title>
 <style>
   *, *:before, *:after { box-sizing: border-box !important; }
-  
-  body { 
-    margin: 0 !important; 
-    padding: 0 !important; 
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
     width: 100% !important;
-    min-width: 100% !important; 
     max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    min-width: 100% !important;
     background-color: #F2F2F7;
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden !important; 
   }
-  
-  table, td { border-spacing: 0; }
-  
+
+  table, td {
+    border-spacing: 0;
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+  }
+
   @media (prefers-color-scheme: dark) {
     body, .bg-page { background-color: #000000 !important; }
     .bg-card { background-color: #1C1C1E !important; }
@@ -200,14 +205,16 @@ function emailHTML(releases, bj) {
   }
 </style>
 </head>
-<body class="bg-page" style="margin:0; padding:0; background-color:#F2F2F7; width:100%; min-width:100%; overflow-x:hidden; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;">
+<body class="bg-page" style="margin:0; padding:0; background-color:#F2F2F7; width:100%; max-width:100%; overflow-x:hidden; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;">
 
-<table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; min-width: 100%;">
+<div style="width:100%; max-width:100%; overflow:hidden;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="width:100%; min-width:100%; table-layout:fixed;">
   <tr>
-    <td align="center" style="padding: 40px 16px 32px 16px;">
+    <td align="center" style="padding: 40px 16px 32px 16px; overflow:hidden;">
 
-      <table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 420px;">
-        
+      <table width="100%" cellpadding="0" cellspacing="0" style="width:100%; max-width:420px; table-layout:fixed;">
+
         <!-- HEADER -->
         <tr>
           <td align="left" style="padding-bottom: 20px; padding-left: 8px;">
@@ -223,13 +230,14 @@ function emailHTML(releases, bj) {
 
         <!-- BODY -->
         <tr>
-          <td style="padding: 0 12px;">
+          <td style="padding: 0 12px; overflow: hidden;">
             <table class="bg-card" width="100%" cellpadding="0" cellspacing="0" style="
               background-color: #FFFFFF;
               border-radius: 16px;
               overflow: hidden;
               width: 100%;
-              box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+              table-layout: fixed;
+              box-shadow: 0 2px 12px rgba(0,0,0,0.04);
             ">
               ${listItems}
             </table>
@@ -253,6 +261,8 @@ function emailHTML(releases, bj) {
     </td>
   </tr>
 </table>
+
+</div>
 
 </body>
 </html>`;
