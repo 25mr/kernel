@@ -130,32 +130,31 @@ function emailHTML(releases, bj) {
   mso-table-rspace:0pt;
 ">
   <tr>
-    <td style="
+    <td width="45%" bgcolor="${hBg}" style="
       background-color:${hBg};
-      padding:18px 24px;
+      padding-top:18px; padding-bottom:18px; padding-left:24px; padding-right:12px;
       color:#FFFFFF;
       font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
       font-size:13px;
       font-weight:700;
       text-transform:uppercase;
       letter-spacing:1.2px;
-      border-right:1px solid rgba(255,255,255,0.2);
-    " width="45%">${esc(r.moniker)}</td>
-    <td style="
+    "><span style="color:#FFFFFF;">${esc(r.moniker)}</span></td>
+    <td width="55%" bgcolor="${hBg}" style="
       background-color:${hBg};
-      padding:18px 24px;
+      padding-top:18px; padding-bottom:18px; padding-left:12px; padding-right:24px;
       color:#FFFFFF;
       font-family:'SF Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,Courier,monospace;
       font-size:18px;
       font-weight:700;
       text-align:right;
       letter-spacing:0.3px;
-    " width="55%">${esc(r.version)}</td>
+    "><span style="color:#FFFFFF;">${esc(r.version)}</span></td>
   </tr>
   <tr>
-    <td colspan="2" style="
+    <td colspan="2" bgcolor="${bBg}" style="
       background-color:${bBg};
-      padding:14px 24px;
+      padding-top:14px; padding-bottom:14px; padding-left:24px; padding-right:24px;
       color:${bTxt};
       font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
       font-size:14px;
@@ -188,17 +187,22 @@ function emailHTML(releases, bj) {
   table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
   img{-ms-interpolation-mode:bicubic;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;}
   body{margin:0;padding:0;width:100%!important;background-color:#F1F5F9;}
+  
+  @media (prefers-color-scheme: dark) {
+    .dark-bg-force { background-color: #0F172A !important; }
+    .dark-text-force { color: #ffffff !important; }
+  }
+  
   @media only screen and (max-width:640px){
     .outer{width:100%!important;}
-    .inner{padding:28px 20px!important;}
-    .hdr{padding:36px 20px 30px!important;}
-    .ftr{padding:22px 20px!important;}
+    .inner{padding-top:28px !important; padding-bottom:28px !important; padding-left:20px !important; padding-right:20px !important;}
+    .hdr{padding-top:36px !important; padding-bottom:30px !important; padding-left:20px !important; padding-right:20px !important;}
+    .ftr{padding-top:22px !important; padding-bottom:22px !important; padding-left:20px !important; padding-right:20px !important;}
   }
 </style>
 </head>
 <body style="margin:0;padding:0;background-color:#F1F5F9;">
 
-<center style="width:100%;background-color:#F1F5F9;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F9;">
 <tr><td align="center" style="padding:36px 16px;">
 
@@ -211,10 +215,10 @@ function emailHTML(releases, bj) {
 
   <!-- ======== HEADER ======== -->
   <tr>
-    <td class="hdr" align="center" style="
+    <td class="hdr dark-bg-force" align="center" style="
       background-color:#0F172A;
       background-image:linear-gradient(135deg,#0F172A 0%,#1E293B 40%,#0F172A 100%);
-      padding:48px 40px 40px;
+      padding-top:48px; padding-bottom:40px; padding-left:40px; padding-right:40px;
       text-align:center;
     ">
       <!--[if mso]>
@@ -227,17 +231,17 @@ function emailHTML(releases, bj) {
           <span style="font-size:48px;line-height:1;">&#x1F427;</span>
         </td></tr>
         <tr><td align="center">
-          <h1 style="margin:0;color:#FFFFFF;
+          <h1 style="margin:0;
             font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
             font-size:24px;font-weight:700;letter-spacing:0.5px;line-height:1.3;">
-            Linux Kernel Update
+            <span style="color:#FFFFFF;">Linux Kernel Update</span>
           </h1>
         </td></tr>
         <tr><td align="center" style="padding-top:10px;">
-          <p style="margin:0;color:#94A3B8;
+          <p style="margin:0;
             font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
             font-size:14px;line-height:1.5;">
-            ${esc(bj.date)}&ensp;&middot;&ensp;Beijing Time
+            <span style="color:#94A3B8;">HAVE FUN ~ ~</span>
           </p>
         </td></tr>
       </table>
@@ -247,7 +251,7 @@ function emailHTML(releases, bj) {
 
   <!-- ======== BODY ======== -->
   <tr>
-    <td class="inner" style="background-color:#FFFFFF;padding:40px 44px 32px;">
+    <td class="inner" style="background-color:#FFFFFF; padding-top:40px; padding-bottom:32px; padding-left:44px; padding-right:44px;">
       <!-- subtitle -->
       <p style="margin:0 0 28px;color:#94A3B8;
         font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
@@ -260,10 +264,10 @@ function emailHTML(releases, bj) {
 
   <!-- ======== FOOTER ======== -->
   <tr>
-    <td class="ftr" align="center" style="
+    <td class="ftr dark-bg-force" align="center" style="
       background-color:#0F172A;
       background-image:linear-gradient(135deg,#1E293B 0%,#0F172A 40%,#1E293B 100%);
-      padding:30px 40px;
+      padding-top:30px; padding-bottom:30px; padding-left:40px; padding-right:40px;
       text-align:center;
     ">
       <!--[if mso]>
@@ -271,15 +275,15 @@ function emailHTML(releases, bj) {
       <v:fill type="gradient" color="#1E293B" color2="#0F172A" angle="135"/>
       <v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
       <![endif]-->
-      <p style="margin:0;color:#94A3B8;
+      <p style="margin:0;
         font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
         font-size:13px;line-height:1.6;">
-        Updated at ${esc(bj.full)} UTC+8
+        <span style="color:#94A3B8;">Updated at ${esc(bj.full)} UTC+8</span>
       </p>
-      <p style="margin:8px 0 0;color:#64748B;
+      <p style="margin:8px 0 0;
         font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
         font-size:11px;line-height:1.4;">
-        Data sourced from kernel.org
+        <span style="color:#64748B;">Data sourced from kernel.org</span>
       </p>
       <!--[if mso]></v:textbox></v:rect><![endif]-->
     </td>
@@ -289,7 +293,6 @@ function emailHTML(releases, bj) {
 <!-- ============ /MAIN CONTAINER ============ -->
 
 </td></tr></table>
-</center>
 </body>
 </html>`;
 }
