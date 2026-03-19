@@ -108,201 +108,221 @@ async function fetchReleases() {
 
 // ─── Email HTML builder ──────────────────────────────────────────
 function emailHTML(releases, bj) {
-  /* ---- per-moniker palette: [headerBg, bodyBg, bodyText, badgeBg] ---- */
   const palette = {
-    mainline: ["#2563EB", "#EFF6FF", "#1E40AF", "#DBEAFE"],
-    stable:   ["#059669", "#ECFDF5", "#065F46", "#D1FAE5"],
-    longterm: ["#7C3AED", "#F5F3FF", "#5B21B6", "#EDE9FE"],
+    mainline: ["#007AFF", "#F2F8FF", "#0A84FF"],
+    stable:   ["#34C759", "#F2FFF6", "#248A3D"],
+    longterm: ["#AF52DE", "#FBF5FF", "#8E44C9"],
   };
-  const fallback = ["#475569", "#F8FAFC", "#334155", "#F1F5F9"];
+  const fallback = ["#8E8E93", "#F5F5F7", "#3A3A3C"];
 
-  const cards = releases
-    .map(r => {
-      const [hBg, bBg, bTxt] = palette[r.moniker] || fallback;
-      return `
-<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0"><tr><td><![endif]-->
-<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="
-  margin-bottom:24px;
-  border-radius:12px;
-  overflow:hidden;
-  border:1px solid #E2E8F0;
-  border-collapse:separate;
-  mso-table-lspace:0pt;
-  mso-table-rspace:0pt;
+  const cards = releases.map(r => {
+    const [accent, bg, text] = palette[r.moniker] || fallback;
+    return `
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="
+  width:100%;
+  margin:0 0 14px 0;
+  background-color:${bg};
+  border:1px solid #E5E5EA;
+  border-radius:14px;
 ">
   <tr>
-    <td class="card-l" width="45%" bgcolor="${hBg}" valign="middle" style="
-      background-color:${hBg};
-      padding-top:16px; padding-bottom:16px; padding-left:20px; padding-right:12px;
-      color:#FFFFFF;
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-      font-size:13px;
-      font-weight:640;
-      text-transform:uppercase;
-      letter-spacing:1px;
-      line-height:1.4;
-    "><span style="color:#FFFFFF;">${esc(r.moniker)}</span></td>
-    <td class="card-r" width="55%" bgcolor="${hBg}" valign="middle" style="
-      background-color:${hBg};
-      padding-top:16px; padding-bottom:16px; padding-left:12px; padding-right:20px;
-      color:#FFFFFF;
-      font-family:'SF Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,Courier,monospace;
-      font-size:18px;
-      font-weight:640;
-      text-align:right;
-      letter-spacing:0.3px;
-      line-height:1.4;
-    "><span style="color:#FFFFFF;">${esc(r.version)}</span></td>
+    <td style="padding:16px 16px 8px 16px;">
+      <div style="
+        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+        font-size:12px;
+        line-height:1.4;
+        font-weight:700;
+        letter-spacing:0.8px;
+        text-transform:uppercase;
+        color:${accent};
+      ">
+        ${esc(r.moniker)}
+      </div>
+    </td>
   </tr>
   <tr>
-    <td class="card-b" colspan="2" bgcolor="${bBg}" valign="middle" style="
-      background-color:${bBg};
-      padding-top:14px; padding-bottom:14px; padding-left:20px; padding-right:20px;
-      color:${bTxt};
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-      font-size:14px;
-      line-height:1.5;
-    ">&#128197;&ensp;${esc(r.isodate)}</td>
+    <td style="padding:0 16px 6px 16px;">
+      <div style="
+        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+        font-size:26px;
+        line-height:1.2;
+        font-weight:700;
+        color:#111111;
+        word-break:break-word;
+      ">
+        ${esc(r.version)}
+      </div>
+    </td>
   </tr>
-</table>
-<!--[if mso]></td></tr></table><![endif]-->`;
-    })
-    .join("\n");
+  <tr>
+    <td style="padding:0 16px 16px 16px;">
+      <div style="
+        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+        font-size:13px;
+        line-height:1.45;
+        color:${text};
+      ">
+        ${esc(r.isodate)}
+      </div>
+    </td>
+  </tr>
+</table>`;
+  }).join("\n");
 
-  /* ---- full email ---- */
   return `<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:v="urn:schemas-microsoft-com:vml"
-      xmlns:o="urn:schemas-microsoft-com:office:office">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Linux Kernel Update</title>
-<!--[if mso]>
-<noscript><xml>
-  <o:OfficeDocumentSettings>
-    <o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch>
-  </o:OfficeDocumentSettings>
-</xml></noscript>
-<![endif]-->
 <style>
-  body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
-  table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
-  img{-ms-interpolation-mode:bicubic;border:0;height:auto;line-height:100%;outline:none;text-decoration:none;}
-  body{margin:0;padding:0;width:100%!important;background-color:#F1F5F9;}
-
-  @media (prefers-color-scheme: dark) {
-    .dark-bg-force { background-color: #0F172A !important; }
-    .dark-text-force { color: #ffffff !important; }
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    background-color: #F2F2F7;
   }
-  
-  @media only screen and (max-width:640px){
-    .outer{width:100%!important; max-width:100%!important;}
-    .inner{padding-top:28px !important; padding-bottom:28px !important; padding-left:16px !important; padding-right:16px !important;}
-    .hdr{padding-top:36px !important; padding-bottom:30px !important; padding-left:16px !important; padding-right:16px !important;}
-    .ftr{padding-top:22px !important; padding-bottom:22px !important; padding-left:16px !important; padding-right:16px !important;}
-    
-    .card-l { padding-left: 16px !important; padding-right: 8px !important; font-size: 12px !important; }
-    .card-r { padding-left: 8px !important; padding-right: 16px !important; font-size: 16px !important; }
-    .card-b { padding-left: 16px !important; padding-right: 16px !important; }
+
+  body, table, td, a {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  table, td {
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+  }
+
+  table {
+    border-spacing: 0 !important;
+  }
+
+  @media only screen and (max-width: 640px) {
+    .outer-pad {
+      padding-top: 18px !important;
+      padding-bottom: 18px !important;
+    }
+
+    .side-pad {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+
+    .panel-head {
+      padding: 24px 18px 18px 18px !important;
+    }
+
+    .panel-body {
+      padding: 6px 14px 14px 14px !important;
+    }
+
+    .panel-foot {
+      padding: 14px 18px 22px 18px !important;
+    }
+
+    .hero-title {
+      font-size: 28px !important;
+      line-height: 1.2 !important;
+    }
   }
 </style>
 </head>
-<body style="margin:0;padding:0;background-color:#F1F5F9;">
+<body style="margin:0;padding:0;background-color:#F2F2F7;width:100% !important;">
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F9;">
-<tr><td align="center" valign="top" style="padding:36px 16px;">
-
-<!-- ============ MAIN CONTAINER ============ -->
-<table class="outer" align="center" role="presentation" width="600" cellpadding="0" cellspacing="0" style="
-  margin: 0 auto;
-  max-width:600px;width:100%;
-  border-radius:16px;overflow:hidden;
-  box-shadow:0 8px 30px rgba(0,0,0,0.12);
-">
-
-  <!-- ======== HEADER ======== -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%; background-color:#F2F2F7;">
   <tr>
-    <td class="hdr dark-bg-force" align="center" style="
-      background-color:#0F172A;
-      background-image:linear-gradient(135deg,#0F172A 0%,#1E293B 40%,#0F172A 100%);
-      padding-top:48px; padding-bottom:40px; padding-left:40px; padding-right:40px;
-      text-align:center;
-    ">
-      <!--[if mso]>
-      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:600px;">
-      <v:fill type="gradient" color="#0F172A" color2="#1E293B" angle="135"/>
-      <v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
-      <![endif]-->
-      <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
-        <tr><td align="center" style="padding-bottom:16px;">
-          <span style="font-size:48px;line-height:1;">&#x1F427;</span>
-        </td></tr>
-        <tr><td align="center">
-          <h1 style="margin:0;
-            font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-            font-size:30px;font-weight:640;letter-spacing:0.5px;line-height:1.3;">
-            <span style="color:#FFFFFF;">Linux Kernel Update</span>
-          </h1>
-        </td></tr>
-        <tr><td align="center" style="padding-top:10px;">
-          <p style="margin:0;
-            font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-            font-size:14px;line-height:1.5;">
-            <span style="color:#94A3B8;">HAVE FUN ~ ~</span>
-          </p>
-        </td></tr>
+    <td class="outer-pad" align="center" style="padding:24px 0;">
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td class="side-pad" align="center" style="padding:0 14px;">
+
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="
+              width:100%;
+              max-width:560px;
+              margin:0 auto;
+              background-color:#FFFFFF;
+              border:1px solid #E5E5EA;
+              border-radius:22px;
+            ">
+
+              <!-- Header -->
+              <tr>
+                <td class="panel-head" style="padding:28px 22px 18px 22px; text-align:center;">
+                  <div style="
+                    font-size:34px;
+                    line-height:1;
+                    margin:0 0 10px 0;
+                  ">
+                    &#63743;
+                  </div>
+
+                  <div class="hero-title" style="
+                    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+                    font-size:30px;
+                    line-height:1.18;
+                    font-weight:700;
+                    color:#111111;
+                    letter-spacing:-0.4px;
+                    margin:0;
+                  ">
+                    Linux Kernel Update
+                  </div>
+
+                  <div style="
+                    margin:8px 0 0 0;
+                    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+                    font-size:14px;
+                    line-height:1.45;
+                    color:#8E8E93;
+                  ">
+                    Latest release snapshot
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Body -->
+              <tr>
+                <td class="panel-body" style="padding:8px 16px 16px 16px;">
+                  ${cards}
+                </td>
+              </tr>
+
+              <!-- Footer -->
+              <tr>
+                <td class="panel-foot" style="padding:12px 22px 24px 22px; text-align:center;">
+                  <div style="
+                    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+                    font-size:12px;
+                    line-height:1.5;
+                    color:#8E8E93;
+                  ">
+                    Updated at ${esc(bj.full)} UTC+8
+                  </div>
+                  <div style="
+                    margin:6px 0 0 0;
+                    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+                    font-size:11px;
+                    line-height:1.45;
+                    color:#C7C7CC;
+                  ">
+                    Data sourced from kernel.org
+                  </div>
+                </td>
+              </tr>
+
+            </table>
+
+          </td>
+        </tr>
       </table>
-      <!--[if mso]></v:textbox></v:rect><![endif]-->
+
     </td>
   </tr>
-
-  <!-- ======== BODY ======== -->
-  <tr>
-    <td class="inner" style="background-color:#FFFFFF; padding-top:40px; padding-bottom:32px; padding-left:44px; padding-right:44px;">
-      <!-- subtitle -->
-      <p style="margin:0 0 28px;color:#94A3B8;
-        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-        font-size:13px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;text-align:center;
-        line-height:1.5;">
-        Latest Releases
-      </p>
-      ${cards}
-    </td>
-  </tr>
-
-  <!-- ======== FOOTER ======== -->
-  <tr>
-    <td class="ftr dark-bg-force" align="center" style="
-      background-color:#0F172A;
-      background-image:linear-gradient(135deg,#1E293B 0%,#0F172A 40%,#1E293B 100%);
-      padding-top:30px; padding-bottom:30px; padding-left:40px; padding-right:40px;
-      text-align:center;
-    ">
-      <!--[if mso]>
-      <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:600px;">
-      <v:fill type="gradient" color="#1E293B" color2="#0F172A" angle="135"/>
-      <v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
-      <![endif]-->
-      <p style="margin:0;
-        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-        font-size:12px;line-height:1.6;">
-        <span style="color:#94A3B8;">Updated at ${esc(bj.full)} UTC+8</span>
-      </p>
-      <p style="margin:8px 0 0;
-        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-        font-size:10px;line-height:1.4;">
-        <span style="color:#64748B;">Data sourced from kernel.org</span>
-      </p>
-      <!--[if mso]></v:textbox></v:rect><![endif]-->
-    </td>
-  </tr>
-
 </table>
-<!-- ============ /MAIN CONTAINER ============ -->
 
-</td></tr></table>
 </body>
 </html>`;
 }
