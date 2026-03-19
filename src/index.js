@@ -108,215 +108,139 @@ async function fetchReleases() {
 
 // ─── Email HTML builder ──────────────────────────────────────────
 function emailHTML(releases, bj) {
+  /* ---- iOS System Colors: [Badge Bg, Badge Text] ---- */
   const palette = {
-    mainline: ["#007AFF", "#F2F8FF", "#0A84FF"],
-    stable:   ["#34C759", "#F2FFF6", "#248A3D"],
-    longterm: ["#AF52DE", "#FBF5FF", "#8E44C9"],
+    mainline: ["#E5F0FF", "#007AFF"], // iOS System Blue
+    stable:   ["#E8F8EE", "#34C759"], // iOS System Green
+    longterm: ["#F4E8FB", "#AF52DE"], // iOS System Purple
   };
-  const fallback = ["#8E8E93", "#F5F5F7", "#3A3A3C"];
+  const fallback = ["#F2F2F7", "#8E8E93"]; // iOS System Gray
 
-  const cards = releases.map(r => {
-    const [accent, bg, text] = palette[r.moniker] || fallback;
-    return `
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="
-  width:100%;
-  margin:0 0 14px 0;
-  background-color:${bg};
-  border:1px solid #E5E5EA;
-  border-radius:14px;
-">
-  <tr>
-    <td style="padding:16px 16px 8px 16px;">
-      <div style="
-        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-        font-size:12px;
-        line-height:1.4;
-        font-weight:700;
-        letter-spacing:0.8px;
-        text-transform:uppercase;
-        color:${accent};
-      ">
-        ${esc(r.moniker)}
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:0 16px 6px 16px;">
-      <div style="
-        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-        font-size:26px;
-        line-height:1.2;
-        font-weight:700;
-        color:#111111;
-        word-break:break-word;
-      ">
-        ${esc(r.version)}
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:0 16px 16px 16px;">
-      <div style="
-        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-        font-size:13px;
-        line-height:1.45;
-        color:${text};
-      ">
-        ${esc(r.isodate)}
-      </div>
-    </td>
-  </tr>
-</table>`;
-  }).join("\n");
+  const listItems = releases
+    .map((r, i) => {
+      const [bg, fg] = palette[r.moniker] || fallback;
+      const isLast = i === releases.length - 1;
+      const borderStyle = isLast ? "" : "border-bottom: 0.5px solid #E5E5EA;";
 
+      return `
+  <tr>
+    <td class="divider" style="padding: 16px 20px; ${borderStyle}">
+      <table width="100%" cellpadding="0" cellspacing="0" style="table-layout: fixed; width: 100%;">
+        <tr>
+          <td width="55%" align="left" valign="middle">
+            <span style="
+              display: inline-block;
+              background-color: ${bg};
+              color: ${fg};
+              font-size: 11px;
+              font-weight: 700;
+              text-transform: uppercase;
+              padding: 4px 10px;
+              border-radius: 12px;
+              letter-spacing: 0.5px;
+            ">${esc(r.moniker)}</span>
+            <div style="
+              margin-top: 8px;
+              font-size: 13px;
+              color: #8E8E93;
+              font-weight: 400;
+              letter-spacing: -0.2px;
+            ">${esc(r.isodate)}</div>
+          </td>
+          
+          <td width="45%" align="right" valign="middle" class="text-primary" style="
+            font-family: 'SF Mono', ui-monospace, Menlo, Monaco, Consolas, monospace;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1D1D1F;
+            letter-spacing: -0.5px;
+            word-break: break-word;
+          ">
+            ${esc(r.version)}
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>`;
+    })
+    .join("\n");
+
+  /* ---- full email ---- */
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Linux Kernel Update</title>
 <style>
-  html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    min-width: 100% !important;
+  *, *:before, *:after { box-sizing: border-box !important; }
+  body { 
+    margin: 0 !important; 
+    padding: 0 !important; 
+    width: 100% !important; 
     background-color: #F2F2F7;
-  }
-
-  body, table, td, a {
     -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
   }
-
-  table, td {
-    mso-table-lspace: 0pt;
-    mso-table-rspace: 0pt;
-  }
-
-  table {
-    border-spacing: 0 !important;
-  }
-
-  @media only screen and (max-width: 640px) {
-    .outer-pad {
-      padding-top: 18px !important;
-      padding-bottom: 18px !important;
-    }
-
-    .side-pad {
-      padding-left: 12px !important;
-      padding-right: 12px !important;
-    }
-
-    .panel-head {
-      padding: 24px 18px 18px 18px !important;
-    }
-
-    .panel-body {
-      padding: 6px 14px 14px 14px !important;
-    }
-
-    .panel-foot {
-      padding: 14px 18px 22px 18px !important;
-    }
-
-    .hero-title {
-      font-size: 28px !important;
-      line-height: 1.2 !important;
-    }
+  table, td { border-spacing: 0; }
+  
+  @media (prefers-color-scheme: dark) {
+    body, .bg-page { background-color: #000000 !important; }
+    .bg-card { background-color: #1C1C1E !important; }
+    .text-primary { color: #FFFFFF !important; }
+    .text-title { color: #FFFFFF !important; }
+    .divider { border-bottom-color: #38383A !important; }
   }
 </style>
 </head>
-<body style="margin:0;padding:0;background-color:#F2F2F7;width:100% !important;">
+<body class="bg-page" style="margin:0; padding:0; background-color:#F2F2F7; width:100%; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;">
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%; background-color:#F2F2F7;">
+<table width="100%" cellpadding="0" cellspacing="0" style="width: 100%;">
   <tr>
-    <td class="outer-pad" align="center" style="padding:24px 0;">
+    <td align="center" style="padding: 40px 16px 32px 16px;">
 
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 500px; margin: 0 auto;">
+        
+        <!-- HEADER -->
         <tr>
-          <td class="side-pad" align="center" style="padding:0 14px;">
-
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="
-              width:100%;
-              max-width:560px;
-              margin:0 auto;
-              background-color:#FFFFFF;
-              border:1px solid #E5E5EA;
-              border-radius:22px;
-            ">
-
-              <!-- Header -->
-              <tr>
-                <td class="panel-head" style="padding:28px 22px 18px 22px; text-align:center;">
-                  <div style="
-                    font-size:34px;
-                    line-height:1;
-                    margin:0 0 10px 0;
-                  ">
-                    &#63743;
-                  </div>
-
-                  <div class="hero-title" style="
-                    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-                    font-size:30px;
-                    line-height:1.18;
-                    font-weight:700;
-                    color:#111111;
-                    letter-spacing:-0.4px;
-                    margin:0;
-                  ">
-                    Linux Kernel Update
-                  </div>
-
-                  <div style="
-                    margin:8px 0 0 0;
-                    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-                    font-size:14px;
-                    line-height:1.45;
-                    color:#8E8E93;
-                  ">
-                    Latest release snapshot
-                  </div>
-                </td>
-              </tr>
-
-              <!-- Body -->
-              <tr>
-                <td class="panel-body" style="padding:8px 16px 16px 16px;">
-                  ${cards}
-                </td>
-              </tr>
-
-              <!-- Footer -->
-              <tr>
-                <td class="panel-foot" style="padding:12px 22px 24px 22px; text-align:center;">
-                  <div style="
-                    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-                    font-size:12px;
-                    line-height:1.5;
-                    color:#8E8E93;
-                  ">
-                    Updated at ${esc(bj.full)} UTC+8
-                  </div>
-                  <div style="
-                    margin:6px 0 0 0;
-                    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-                    font-size:11px;
-                    line-height:1.45;
-                    color:#C7C7CC;
-                  ">
-                    Data sourced from kernel.org
-                  </div>
-                </td>
-              </tr>
-
-            </table>
-
+          <td align="left" style="padding-bottom: 20px; padding-left: 8px;">
+            <div style="font-size: 30px; margin-bottom: 8px;">&#x1F427;</div>
+            <h1 class="text-title" style="margin: 0; font-size: 28px; font-weight: 700; color: #1D1D1F; letter-spacing: -0.8px;">
+              Linux Kernel
+            </h1>
+            <p style="margin: 4px 0 0; font-size: 13px; font-weight: 600; color: #8E8E93; text-transform: uppercase; letter-spacing: 1.2px;">
+              Latest Releases
+            </p>
           </td>
         </tr>
+
+        <!-- BODY -->
+        <tr>
+          <td>
+            <table class="bg-card" width="100%" cellpadding="0" cellspacing="0" style="
+              background-color: #FFFFFF;
+              border-radius: 16px;
+              overflow: hidden;
+              width: 100%;
+              box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+            ">
+              ${listItems}
+            </table>
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td align="center" style="padding-top: 24px;">
+            <p style="margin: 0; font-size: 12px; color: #8E8E93;">
+              Updated at ${esc(bj.full)}
+            </p>
+            <p style="margin: 4px 0 0; font-size: 11px; color: #AEAEB2;">
+              kernel.org
+            </p>
+          </td>
+        </tr>
+
       </table>
 
     </td>
