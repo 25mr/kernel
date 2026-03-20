@@ -192,6 +192,7 @@ function emailHTML(releases, bj) {
     width:100% !important;min-width:100% !important;
     -webkit-text-size-adjust:100% !important;
     -ms-text-size-adjust:100% !important;
+    background:#eef1f5;
   }
   table{
     border-spacing:0 !important;
@@ -203,75 +204,63 @@ function emailHTML(releases, bj) {
   img{border:0;height:auto;line-height:100%;outline:none;text-decoration:none;}
 </style>
 </head>
-<body style="
-  margin:0;padding:0;width:100%;
-  background-color:#F2F2F7;
-  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',
-              'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-">
+<body style="margin:0;padding:0;background:#eef1f5;">
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
-  style="width:100%;table-layout:fixed;background-color:#F2F2F7;">
-<tr>
-<td align="center" valign="top" style="padding:0;">
-
-<!--[if (gte mso 9)|(IE)]>
-<table role="presentation" width="480" align="center"
-  cellpadding="0" cellspacing="0" border="0"><tr><td>
-<![endif]-->
-
-<table role="presentation" cellpadding="0" cellspacing="0" border="0"
-  style="width:100%;max-width:480px;table-layout:fixed;">
-
-  <!-- ===== HEADER ===== -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef1f5;">
   <tr>
-    <td align="center" style="
-      background-color:#0F172A;
-      background-image:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);
-      padding:36px 20px 28px;
-    ">
-      <div style="font-size:52px;line-height:62px;margin-bottom:12px;">&#x1F427;</div>
-      <h1 style="
-        margin:0;font-size:28px;font-weight:700;
-        color:#FFFFFF;letter-spacing:-0.5px;line-height:30px;
-      ">Linux Kernel</h1>
-      <p style="
-        margin:6px 0 0;font-size:11px;font-weight:600;
-        color:#94A3B8;text-transform:uppercase;
-        letter-spacing:1.5px;line-height:16px;
-      ">Latest Releases</p>
+    <td align="center" style="padding:40px 16px;">
+
+      <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+             style="max-width:460px;background:#ffffff;border-radius:20px;overflow:hidden;
+                    box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+
+        <tr>
+          <td style="background:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);
+                     padding:36px 32px 28px;text-align:center;">
+            <table role="presentation" cellpadding="0" cellspacing="0" align="center">
+              <tr>
+                <td style="width:60px;height:60px;background:rgba(255,255,255,0.2);
+                           border-radius:50%;text-align:center;line-height:60px;font-size:30px;">
+                  &#x1F427;
+                </td>
+              </tr>
+            </table>
+            <h1 style="margin:16px 0 0;font-size:32px;color:#ffffff;font-weight:700;letter-spacing:0.5px;">
+              Linux Kernel
+            </h1>
+            <p style="margin:8px 0 0;font-size:18px;color:rgba(148,163,184,0.9);text-transform:uppercase;letter-spacing:1.5px;line-height:1.5;">
+              Latest Releases
+            </p>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:20px 20px 8px;background:#f8fafc;">
+            ${releaseCards}
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:8px 28px 28px;text-align:center;background:#ffffff;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="border-top:1px solid #f1f5f9;padding-top:18px;">
+                  <p style="margin:0;font-size:12px;color:#94A3B8;line-height:1.8;">
+                    Updated at ${esc(bj.full)} UTC+8
+                  </p>
+                  <p style="margin:4px 0 0;font-size:12px;color:#64748B;line-height:1.8;">
+                    Data source: kernel.org
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+
     </td>
   </tr>
-
-  <!-- ===== BODY ===== -->
-  <tr>
-    <td style="padding:16px 24px 8px;background-color:#F2F2F7;">
-      ${releaseCards}
-    </td>
-  </tr>
-
-  <!-- ===== FOOTER ===== -->
-  <tr>
-    <td align="center" style="
-      background-color:#0F172A;
-      background-image:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);
-      padding:20px 16px;
-    ">
-      <p style="margin:0;font-size:12px;color:#94A3B8;line-height:18px;">
-        Updated at ${esc(bj.full)} UTC+8
-      </p>
-      <p style="margin:4px 0 0;font-size:12px;color:#64748B;line-height:18px;">
-        Data source: kernel.org
-      </p>
-    </td>
-  </tr>
-
-</table>
-
-<!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
-
-</td>
-</tr>
 </table>
 
 </body>
