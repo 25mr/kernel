@@ -189,14 +189,12 @@ function emailHTML(releases, bj) {
 <style type="text/css">
   body{
     margin:0 !important;padding:0 !important;
-    width:100% !important;min-width:100% !important;
     -webkit-text-size-adjust:100% !important;
     -ms-text-size-adjust:100% !important;
     background:#eef1f5;
   }
   table{
     border-spacing:0 !important;
-    border-collapse:collapse !important;
     mso-table-lspace:0pt !important;
     mso-table-rspace:0pt !important;
   }
