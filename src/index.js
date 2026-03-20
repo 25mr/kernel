@@ -195,6 +195,7 @@ function emailHTML(releases, bj) {
   }
   table{
     border-spacing:0 !important;
+    border-collapse:collapse !important;
     mso-table-lspace:0pt !important;
     mso-table-rspace:0pt !important;
   }
@@ -233,7 +234,7 @@ function emailHTML(releases, bj) {
         </tr>
 
         <tr>
-          <td style="padding:20px 20px 8px;background:#f8fafc;">
+          <td style="padding:16px 16px 8px;background:#f8fafc;">
             ${releaseCards}
           </td>
         </tr>
